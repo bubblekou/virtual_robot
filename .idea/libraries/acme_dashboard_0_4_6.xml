@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="acme-dashboard-0.4.6">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/acme-dashboard-0.4.6.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
