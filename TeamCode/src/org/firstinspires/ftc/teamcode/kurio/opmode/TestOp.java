@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.kurio.Robot;
 import org.firstinspires.ftc.teamcode.kurio.math.Pose;
 
-@TeleOp
+@TeleOp(name = "TeleOp Test", group = "KuriosityBot")
 public class TestOp extends LinearOpMode {
     private Robot robot;
 

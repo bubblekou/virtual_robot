@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.kurio.pathfollow.WayPoint;
 
 import java.util.Arrays;
 
-@Autonomous
+@Autonomous(name = "SimpleCurve", group = "KuriosityBot")
 public class SimpleCurve extends LinearOpMode {
     public void runOpMode() {
         Robot robot = new Robot(this, new Pose(0, 0, 0), false);

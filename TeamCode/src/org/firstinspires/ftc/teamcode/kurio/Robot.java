@@ -26,19 +26,19 @@ public class Robot {
     private final TelemetryDump telemetryDump;
 
     // electronics
-//    private final LynxModule controlHub;
+    private final LynxModule controlHub;
 
     public Robot(LinearOpMode linearOpMode, Pose pose, boolean useDashboard) {
         this.linearOpMode = linearOpMode;
 
         this.telemetryDump = new TelemetryDump(linearOpMode.telemetry, useDashboard);
 
-//        try {
-//            controlHub = linearOpMode.hardwareMap.get(LynxModule.class, "Control Hub");
-//            controlHub.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL);
-//        } catch (RuntimeException e) {
-//            throw new RuntimeException("One or more of the REV hubs could not be found. More info: " + e);
-//        }
+        try {
+            controlHub = linearOpMode.hardwareMap.get(LynxModule.class, "Control Hub");
+            controlHub.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL);
+        } catch (RuntimeException e) {
+            throw new RuntimeException("One or more of the REV hubs could not be found. More info: " + e);
+        }
 
         drivetrainModule = new DrivetrainModule(linearOpMode.hardwareMap);
 

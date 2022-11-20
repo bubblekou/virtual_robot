@@ -1,5 +1,6 @@
 package virtual_robot.robots.classes;
 
+import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.hardware.DeadWheelEncoder;
 import com.qualcomm.robotcore.hardware.ServoImpl;
 import com.qualcomm.robotcore.hardware.configuration.MotorType;
@@ -51,6 +52,9 @@ public class KuriosityBot extends MecanumPhysicsBase {
         hardwareMap.put("fRight", hardwareMap.dcMotor.get("front_right_motor"));
         hardwareMap.put("bLeft", hardwareMap.dcMotor.get("back_left_motor"));
         hardwareMap.put("bRight", hardwareMap.dcMotor.get("back_right_motor"));
+
+        // Electronics
+        hardwareMap.put("Control Hub", new LynxModule());
 
         hardwareMap.setActive(false);
     }

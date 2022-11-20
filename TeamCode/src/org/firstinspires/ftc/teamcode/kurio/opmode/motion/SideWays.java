@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.kurio.opmode.motion;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.kurio.Robot;
 import org.firstinspires.ftc.teamcode.kurio.math.Pose;
 import org.firstinspires.ftc.teamcode.kurio.pathfollow.HeadingControlledWayPoint;
@@ -10,7 +11,7 @@ import org.firstinspires.ftc.teamcode.kurio.pathfollow.StopWayPoint;
 
 import java.util.Arrays;
 
-@Autonomous
+@Autonomous(name = "SideWays", group = "KuriosityBot")
 public class SideWays extends LinearOpMode {
     public void runOpMode() {
         Robot robot = new Robot(this, new Pose(0, 0, 0), false);
