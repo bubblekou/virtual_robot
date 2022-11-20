@@ -1,9 +1,9 @@
 package org.firstinspires.ftc.teamcode.kurio.odometry;
 
+
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-
 import org.firstinspires.ftc.teamcode.kurio.debug.telemetry.Telemeter;
 import org.firstinspires.ftc.teamcode.kurio.math.Pose;
 
@@ -39,16 +39,16 @@ public class ObamaTree implements Telemeter {
     private double lastUpdateTime = 0;
 
     // Constants
-    public static double INCHES_PER_ENCODER_TICK = 0.00076699039;
-    public static double LR_ENCODER_DIST_FROM_CENTER = 7.025;
-    public static double M_ENCODER_DIST_FROM_CENTER = 8;
+    private static final double INCHES_PER_ENCODER_TICK = 0.0007284406721 * (100.0 / 101.9889);
+    private static final double LR_ENCODER_DIST_FROM_CENTER = 2.4367390324945863115640954444386315979381132912686705686229716745 * (3631.6415304167253 / 3600.);
+    private static final double M_ENCODER_DIST_FROM_CENTER = 2.9761730787305137386664648856740921319601002407647215925090672904 * (3622.009011720834 / 3600.);
 
     private final Object lock = new Object();
 
     public ObamaTree(HardwareMap hardwareMap, Pose pose) {
-        worldX = pose.x;
-        worldY = pose.y;
-        worldHeadingRad = pose.heading;
+        worldX = pose.getX();
+        worldY = pose.getY();
+        worldHeadingRad = pose.getTheta();
         yLeftEncoder = hardwareMap.get(DcMotor.class, "fLeft");
         yRightEncoder = hardwareMap.get(DcMotor.class, "fRight");
         mecanumEncoder = hardwareMap.get(DcMotor.class, "bLeft");
@@ -66,8 +66,8 @@ public class ObamaTree implements Telemeter {
     }
 
     private void calculatePosition() {
-        double newLeftPosition = -yLeftEncoder.getCurrentPosition();
-        double newRightPosition = -yRightEncoder.getCurrentPosition();
+        double newLeftPosition = yLeftEncoder.getCurrentPosition();
+        double newRightPosition = yRightEncoder.getCurrentPosition();
         double newMecanumPosition = -mecanumEncoder.getCurrentPosition();
 
         double deltaLeftPosition = newLeftPosition - lastLeftPosition;
@@ -84,9 +84,9 @@ public class ObamaTree implements Telemeter {
     private void calculateVelocity() {
         long currentUpdateTime = System.currentTimeMillis();
 
-        xVel = 1000000000.0 * (worldX - oldX) / (currentUpdateTime - lastUpdateTime);
-        yVel = 1000000000.0 * (worldY - oldY) / (currentUpdateTime - lastUpdateTime);
-        angleVel = 1000000000.0 * (worldHeadingRad - oldHeading) / (currentUpdateTime - lastUpdateTime);
+        xVel = 1000.0 * (worldX - oldX) / (currentUpdateTime - lastUpdateTime);
+        yVel = 1000.0 * (worldY - oldY) / (currentUpdateTime - lastUpdateTime);
+        angleVel = 1000.0 * (worldHeadingRad - oldHeading) / (currentUpdateTime - lastUpdateTime);
 
         oldX = worldX;
         oldY = worldY;
@@ -193,6 +193,12 @@ public class ObamaTree implements Telemeter {
         data.add("xVel: " + xVel);
         data.add("yVel: " + yVel);
         data.add("angleVel: " + angleVel);
+
+        data.add("--");
+
+        data.add("last left: " + lastLeftPosition);
+        data.add("last right: " + lastRightPosition);
+        data.add("last mecanum: " + lastMecanumPosition);
 
         return data;
     }

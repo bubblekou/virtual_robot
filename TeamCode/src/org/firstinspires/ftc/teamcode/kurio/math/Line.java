@@ -2,24 +2,24 @@ package org.firstinspires.ftc.teamcode.kurio.math;
 
 
 public class Line {
-    double slope;
-    double intercept;
+    private final double slope;
+    private final double intercept;
     // If true, intercept is x-intercept. Otherwise (usually) it is y-intercept
     private final boolean isVerticalLine;
 
     public Line(Point p1, Point p2) {
-        this(p1, (p2.y - p1.y) / (p2.x - p1.x));
+        this(p1, (p2.getY() - p1.getY()) / (p2.getX() - p1.getX()));
     }
 
     public Line(Point point, double slope) {
         // We use negative infinity for the slope because it makes perpendicular slopes work
         if (Double.isInfinite(slope)) {
             this.slope = Double.NEGATIVE_INFINITY;
-            this.intercept = point.x;
+            this.intercept = point.getX();
             this.isVerticalLine = true;
         } else {
             this.slope = slope;
-            this.intercept = point.y - point.x * slope;
+            this.intercept = point.getX() - point.getX() * slope;
             this.isVerticalLine = false;
         }
     }
@@ -75,11 +75,11 @@ public class Line {
     }
 
     public static Point midpoint(Point p1, Point p2) {
-        return new Point((p1.x + p2.x) / 2, (p1.y + p2.y) / 2);
+        return new Point((p1.getX() + p2.getX()) / 2, (p1.getY() + p2.getY()) / 2);
     }
 
     public static double distance(Point p1, Point p2) {
-        return Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2));
+        return Math.sqrt(Math.pow(p1.getX() - p2.getX(), 2) + Math.pow(p1.getY() - p2.getY(), 2));
     }
 
     @Override

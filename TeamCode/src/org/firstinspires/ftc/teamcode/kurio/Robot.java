@@ -4,15 +4,13 @@ import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-
 import org.firstinspires.ftc.teamcode.kurio.debug.DebugThread;
 import org.firstinspires.ftc.teamcode.kurio.debug.telemetry.TelemetryDump;
 import org.firstinspires.ftc.teamcode.kurio.math.Pose;
-import org.firstinspires.ftc.teamcode.kurio.odometry.SensorThread;
-import org.firstinspires.ftc.teamcode.kurio.purepursuit.MecanumPowers;
 import org.firstinspires.ftc.teamcode.kurio.modules.DrivetrainModule;
 import org.firstinspires.ftc.teamcode.kurio.modules.Module;
 import org.firstinspires.ftc.teamcode.kurio.modules.ModuleThread;
+import org.firstinspires.ftc.teamcode.kurio.odometry.SensorThread;
 
 public class Robot {
     // threads
@@ -28,24 +26,19 @@ public class Robot {
     private final TelemetryDump telemetryDump;
 
     // electronics
-    private final LynxModule controlHub;
+//    private final LynxModule controlHub;
 
-    public Robot(LinearOpMode linearOpMode, Pose pose, boolean enableDashboard) {
+    public Robot(LinearOpMode linearOpMode, Pose pose, boolean useDashboard) {
         this.linearOpMode = linearOpMode;
 
-        this.telemetryDump = new TelemetryDump(linearOpMode.telemetry, enableDashboard);
+        this.telemetryDump = new TelemetryDump(linearOpMode.telemetry, useDashboard);
 
-        if (enableDashboard) {
-            try {
-                controlHub = linearOpMode.hardwareMap.get(LynxModule.class, "Control Hub");
-                controlHub.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL);
-            } catch (RuntimeException e) {
-                throw new RuntimeException("One or more of the REV hubs could not be found. More info: " + e);
-            }
-        } else {
-            // Do nothing
-            controlHub = null;
-        }
+//        try {
+//            controlHub = linearOpMode.hardwareMap.get(LynxModule.class, "Control Hub");
+//            controlHub.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL);
+//        } catch (RuntimeException e) {
+//            throw new RuntimeException("One or more of the REV hubs could not be found. More info: " + e);
+//        }
 
         drivetrainModule = new DrivetrainModule(linearOpMode.hardwareMap);
 
@@ -90,9 +83,9 @@ public class Robot {
         return linearOpMode.isStarted();
     }
 
-    public LynxModule getControlHub() {
-        return controlHub;
-    }
+//    public LynxModule getControlHub() {
+//        return controlHub;
+//    }
 
     public DrivetrainModule getDrivetrainModule(){
         return drivetrainModule;
@@ -118,13 +111,5 @@ public class Robot {
 
     public Pose getPose() {
         return this.sensorThread.getOdometry().getPose();
-    }
-
-    public Pose getVelocity() {
-        return this.sensorThread.getOdometry().getVelocity();
-    }
-
-    public void setPowers(MecanumPowers powers) {
-        this.drivetrainModule.setMotorPowers(powers);
     }
 }

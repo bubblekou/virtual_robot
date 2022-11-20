@@ -1,11 +1,7 @@
 package org.firstinspires.ftc.teamcode.kurio.odometry;
 
-import static de.esoco.coroutine.Coroutine.first;
-import static de.esoco.coroutine.CoroutineScope.launch;
-import static de.esoco.coroutine.step.CodeExecution.consume;
-
 import com.qualcomm.hardware.lynx.LynxModule;
-
+import de.esoco.coroutine.Coroutine;
 import org.firstinspires.ftc.teamcode.kurio.Robot;
 import org.firstinspires.ftc.teamcode.kurio.debug.telemetry.Telemeter;
 import org.firstinspires.ftc.teamcode.kurio.math.Pose;
@@ -13,7 +9,8 @@ import org.firstinspires.ftc.teamcode.kurio.math.Pose;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.esoco.coroutine.Coroutine;
+import static de.esoco.coroutine.Coroutine.first;
+import static de.esoco.coroutine.CoroutineScope.launch;
 
 public class SensorThread implements Runnable, Telemeter {
 //    private static final Coroutine<LynxModule, Void> bulkDataCoroutine = first(consume(LynxModule::getBulkData));

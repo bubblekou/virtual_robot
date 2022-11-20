@@ -3,10 +3,8 @@ package org.firstinspires.ftc.teamcode.kurio.debug.telemetry;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.canvas.Canvas;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
-
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.kurio.math.Pose;
-import org.firstinspires.ftc.teamcode.kurio.purepursuit.PurePursuitPath;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,15 +14,14 @@ public class TelemetryDump implements PoseWatcher {
     private final Telemetry telemetry;
     private FtcDashboard dashboard;
     private final List<Pose> poseHistory = new ArrayList<>();
+    private boolean useDashboard;
 
     private final ConcurrentLinkedQueue<Telemeter> telemeters = new ConcurrentLinkedQueue<>();
 
-    private final boolean enableDashboard;
-
-    public TelemetryDump(Telemetry telemetry, boolean enableDashboard) {
+    public TelemetryDump(Telemetry telemetry, boolean useDashboard) {
         this.telemetry = telemetry;
-        this.enableDashboard = enableDashboard;
-        if (enableDashboard) {
+        this.useDashboard = useDashboard;
+        if (useDashboard) {
             this.dashboard = FtcDashboard.getInstance();
             while (dashboard == null) {
                 this.dashboard = FtcDashboard.getInstance();
@@ -50,25 +47,15 @@ public class TelemetryDump implements PoseWatcher {
 
     @Override
     public void sendPose(Pose pose) {
-        TelemetryPacket packet = new TelemetryPacket();
-        Canvas canvas = packet.fieldOverlay();
-
-        pose = pose.toFTCSystem();
-
-        poseHistory.add(pose);
-        DashboardUtil.drawRobot(canvas, pose);
-        DashboardUtil.drawPoseHistory(canvas, poseHistory);
-
-        dashboard.sendTelemetryPacket(packet);
-    }
-
-    @Override
-    public void sendPath(PurePursuitPath path) {
-        if (enableDashboard) {
+        if (useDashboard) {
             TelemetryPacket packet = new TelemetryPacket();
             Canvas canvas = packet.fieldOverlay();
 
-            path.draw(canvas);
+            pose = pose.toFTCSystem();
+
+            poseHistory.add(pose);
+            DashboardUtil.drawRobot(canvas, pose);
+            DashboardUtil.drawPoseHistory(canvas, poseHistory);
 
             dashboard.sendTelemetryPacket(packet);
         }

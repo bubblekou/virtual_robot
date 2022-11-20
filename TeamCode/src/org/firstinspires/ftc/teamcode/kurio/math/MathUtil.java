@@ -35,28 +35,6 @@ public class MathUtil {
         return (Math.abs(d) < thresh) ? 0 : d;
     }
 
-    public static Pose relativeOdometryUpdate(Pose fieldPose, Pose robotPoseDelta) {
-        double dtheta = robotPoseDelta.heading;
-        double sineTerm, cosTerm;
-
-        if (approxEquals(dtheta, 0)) {
-            sineTerm = 1.0 - dtheta * dtheta / 6.0;
-            cosTerm = dtheta / 2.0;
-        } else {
-            sineTerm = Math.sin(dtheta) / dtheta;
-            cosTerm = (1 - Math.cos(dtheta)) / dtheta;
-        }
-
-        Point fieldPositionDelta = new Point(
-                sineTerm * robotPoseDelta.x - cosTerm * robotPoseDelta.y,
-                cosTerm * robotPoseDelta.x + sineTerm * robotPoseDelta.y
-        );
-
-        Pose fieldPoseDelta = new Pose(fieldPositionDelta.rotated(fieldPose.heading), robotPoseDelta.heading);
-
-        return fieldPose.add(fieldPoseDelta);
-    }
-
     public static boolean approxEquals(double d1, double d2) {
         if (Double.isInfinite(d1)) {
             // Infinity - infinity is NaN, so we need a special case
@@ -66,11 +44,11 @@ public class MathUtil {
         }
     }
 
-    public static Point lineSegmentCircleIntersection(Point pointA, Point pointB, Point center, double radius) {
-        double baX = pointB.x - pointA.x;
-        double baY = pointB.y - pointA.y;
-        double caX = center.x - pointA.x;
-        double caY = center.y - pointA.y;
+    public static Point lineSegmentCircleIntersectionFar(Point pointA, Point pointB, Point center, double radius) {
+        double baX = pointB.getX() - pointA.getX();
+        double baY = pointB.getY() - pointA.getY();
+        double caX = center.getX() - pointA.getX();
+        double caY = center.getY() - pointA.getY();
 
         double a = baX * baX + baY * baY;
         double bBy2 = baX * caX + baY * caY;
@@ -80,6 +58,7 @@ public class MathUtil {
         double q = c / a;
 
         double disc = pBy2 * pBy2 - q;
+        // If there are any cases where disc is very small but negative(ex. -1.17e16), we need to set it to zero
         if (disc < 0 && Math.abs(disc) > EPSILON) return null;
         else if (Math.abs(disc) < EPSILON) disc = 0;
         // if disc == 0 ... dealt with later
@@ -87,12 +66,38 @@ public class MathUtil {
         double abScalingFactor1 = -pBy2 + tmpSqrt;
         double abScalingFactor2 = -pBy2 - tmpSqrt;
 
-        Point p1 = new Point(pointA.x - baX * abScalingFactor1, pointA.y
-                - baY * abScalingFactor1);
+        Point p1 = new Point(pointA.getX() - baX * abScalingFactor1, pointA.getY() - baY * abScalingFactor1);
         if (disc == 0) return p1;
-        Point p2 = new Point(pointA.x - baX * abScalingFactor2, pointA.y
-                - baY * abScalingFactor2);
-        return p1.distanceTo(pointA) < p2.distanceTo(pointA) ? p1 : p2;
+        Point p2 = new Point(pointA.getX() - baX * abScalingFactor2, pointA.getY() - baY * abScalingFactor2);
+        return p1.distance(pointB) < p2.distance(pointB) ? p1 : p2;
+    }
+
+    public static Point lineSegmentCircleIntersectionNear(Point pointA, Point pointB, Point center, double radius) {
+        double baX = pointB.getX() - pointA.getX();
+        double baY = pointB.getY() - pointA.getY();
+        double caX = center.getX() - pointA.getX();
+        double caY = center.getY() - pointA.getY();
+
+        double a = baX * baX + baY * baY;
+        double bBy2 = baX * caX + baY * caY;
+        double c = caX * caX + caY * caY - radius * radius;
+
+        double pBy2 = bBy2 / a;
+        double q = c / a;
+
+        double disc = pBy2 * pBy2 - q;
+        // If there are any cases where disc is very small but negative(ex. -1.17e16), we need to set it to zero
+        if (disc < 0 && Math.abs(disc) > EPSILON) return null;
+        else if (Math.abs(disc) < EPSILON) disc = 0;
+        // if disc == 0 ... dealt with later
+        double tmpSqrt = Math.sqrt(disc);
+        double abScalingFactor1 = -pBy2 + tmpSqrt;
+        double abScalingFactor2 = -pBy2 - tmpSqrt;
+
+        Point p1 = new Point(pointA.getX() - baX * abScalingFactor1, pointA.getY() - baY * abScalingFactor1);
+        if (disc == 0) return p1;
+        Point p2 = new Point(pointA.getX() - baX * abScalingFactor2, pointA.getY() - baY * abScalingFactor2);
+        return p1.distance(pointA) < p2.distance(pointA) ? p1 : p2;
     }
 
     private static int sign(double n) {
@@ -101,6 +106,22 @@ public class MathUtil {
 
     public static boolean between(double r1, double r2, double val, double threshold) {
         return val > (Math.min(r1, r2) - threshold) && val < (Math.max(r1, r2) + threshold);
+    }
+
+    public static Pose relativeDistance(Pose pose, Point target) {
+        double distance = target.distance(pose);
+        double angle = Math.atan2(target.getY() - pose.getY(), target.getX() - pose.getX());
+
+        double x = distance * Math.cos(angle);
+        double y = distance * Math.sin(angle);
+
+        return new Pose(x, y, angle);
+    }
+
+    public static Pose scaleDowntoOne(double x, double y, double theta) {
+        double max = Math.max(Math.abs(x), Math.max(Math.abs(y), Math.max(Math.abs(theta), 0)));
+
+        return new Pose(x / max, y / max, theta / max);
     }
 }
 
