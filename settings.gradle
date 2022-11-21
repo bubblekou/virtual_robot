@@ -1,0 +1,5 @@
+include ':Controller'
+include ':TeamCode'
+
+rootProject.name = 'kuriosity-virtual-bot'
+

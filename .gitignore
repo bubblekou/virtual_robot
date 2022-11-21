@@ -1,4 +1,12 @@
 out/
 *.class
+.idea/.name
+.idea/jarRepositories.xml
 .idea/vcs.xml
 .idea/workspace.xml
+.idea/gradle.xml
+.idea/misc.xml
+.gradle
+Controller/build/
+TeamCode/build/
+local.properties

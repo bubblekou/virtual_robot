@@ -84,7 +84,5 @@ class MathUtilTest {
                 radius);
         assertEquals(xt, intercept.getX(), MathUtil.EPSILON);
         assertEquals(yt, intercept.getY(), MathUtil.EPSILON);
-
-        assertFalse(true);
     }
 }
