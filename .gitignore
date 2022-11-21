@@ -7,6 +7,7 @@ out/
 .idea/gradle.xml
 .idea/misc.xml
 .gradle
+.DS_Store
 Controller/build/
 TeamCode/build/
 local.properties

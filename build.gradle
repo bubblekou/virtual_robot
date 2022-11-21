@@ -1,32 +1,21 @@
-/**
- * Top-level build file for ftc_app project.
- *
- * It is extraordinarily rare that you will ever need to edit this file.
- */
-buildscript {
-    repositories {
-        gradlePluginPortal()
-        mavenCentral()
-        google()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:4.0.1'
-    }
+plugins {
+    id 'java'
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.13'
 }
 
-// This is now required because aapt2 has to be downloaded from the
-// google() repository beginning with version 3.2 of the Android Gradle Plugin
-allprojects {
-    repositories {
-        mavenCentral()
-        google()
-    }
+javafx {
+    version = "11"
+    modules = [ 'javafx.controls', "javafx.fxml" ]
 }
 
-repositories {
-    mavenCentral()
+application {
+    mainClass = 'virtual_robot.controller.VirtualRobotApplication'
+}
 
-    flatDir {
-        dirs '../libs'
-    }
+apply from: 'build.dependencies.gradle'
+
+dependencies {
+    implementation project(':Controller')
+    implementation project(':TeamCode')
 }
