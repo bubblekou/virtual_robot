@@ -34,3 +34,6 @@ jobs:
         arguments: build
     - name: Run test
       run: ./gradlew :TeamCode:test
+      
+    - name: Test coverage
+      run: ./gradlew :TeamCode:jacocoTestReport
