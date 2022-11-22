@@ -1,8 +1,18 @@
 plugins {
-    id 'java-library'
+    id 'java'
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.13'
 }
 
+javafx {
+    version = "19"
+    modules = [ 'javafx.controls', "javafx.fxml" ]
+}
 apply from: '../build.dependencies.gradle'
+
+application {
+    mainClass = 'virtual_robot.controller.VirtualRobotApplication'
+}
 
 dependencies {
     implementation project(':Controller')
