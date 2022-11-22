@@ -1,11 +1,6 @@
 out/
 *.class
-.idea/.name
-.idea/jarRepositories.xml
-.idea/vcs.xml
-.idea/workspace.xml
-.idea/gradle.xml
-.idea/misc.xml
+.idea/
 .gradle
 .DS_Store
 Controller/build/
