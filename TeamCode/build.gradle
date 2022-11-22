@@ -12,10 +12,8 @@ dependencies {
     implementation 'de.esoco:coroutines:0.9.1'
     implementation 'de.esoco:esoco-common:1.4.0'
 
-    dependencies {
-        implementation files('../lib/acme-dashboard-0.4.6.jar')
-        implementation files('../lib/road-runner-core-0.5.4.jar')
-    }
+    implementation files('../lib/acme-dashboard-0.4.6.jar')
+    implementation files('../lib/road-runner-core-0.5.4.jar')
 
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.0'
@@ -23,5 +21,11 @@ dependencies {
 
 test {
     useJUnitPlatform()
+
+    testLogging.showStandardStreams = true
+
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
 }
 
