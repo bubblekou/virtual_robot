@@ -17,8 +17,8 @@ public class SimpleCurve extends LinearOpMode {
 
         PurePursuit pp = new PurePursuit(robot, Arrays.asList(new WayPoint(0, 0),
                 new WayPoint(0, 20),
-                new WayPoint(-30, 40),
-                new StopWayPoint(-30, 60, 0, 1.0, Math.toRadians(5))), 8);
+                new WayPoint(30, 40),
+                new StopWayPoint(30, 60, 0, 1.0, Math.toRadians(5))), 6);
 
         waitForStart();
 

@@ -118,10 +118,11 @@ public class MathUtil {
         return new Pose(x, y, angle);
     }
 
-    public static Pose scaleDowntoOne(double x, double y, double theta) {
-        double max = Math.max(Math.abs(x), Math.max(Math.abs(y), Math.max(Math.abs(theta), 0)));
+    public static double max(double... values) {
+        double max = 1;
+        for (double val : values) max = Math.max(max, val);
 
-        return new Pose(x / max, y / max, theta / max);
+        return max;
     }
 }
 

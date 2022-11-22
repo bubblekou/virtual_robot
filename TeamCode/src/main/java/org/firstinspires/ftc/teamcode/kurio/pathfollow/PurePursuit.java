@@ -55,21 +55,13 @@ public class PurePursuit {
             return false;
         }
 
-//        if (position.distance(end) < followRadius) {
+        if (pathIndex == path.size() - 2) {
 //            double xPow = xPID.calculateSpeed(end.getX() - position.getX());
 //            double yPow = yPID.calculateSpeed(end.getY() - position.getY());
 //            double anglePow = headingPID.calculateSpeed(end.getHeading()- position.getTheta());
 //
 //            robot.getDrivetrainModule().setPowers(xPow, yPow, anglePow);
-//
-//            return true;
-//        }
-        if (pathIndex == path.size() - 2) {
-            double xPow = xPID.calculateSpeed(end.getX() - position.getX());
-            double yPow = yPID.calculateSpeed(end.getY() - position.getY());
-            double anglePow = headingPID.calculateSpeed(end.getHeading()- position.getTheta());
-
-            robot.getDrivetrainModule().setPowers(xPow, yPow, anglePow);
+            robot.getDrivetrainModule().setPowers(end.getX() - position.getX(), end.getY() - position.getY(), end.getHeading() - position.getTheta());
 
             return true;
         }
@@ -77,20 +69,23 @@ public class PurePursuit {
         Point target = targetPosition(position);
         Pose relDistancetoTarget = MathUtil.relativeDistance(position, target);
 
-        double xPow = xPID.calculateSpeed(relDistancetoTarget.getX());
-        double yPow = yPID.calculateSpeed(relDistancetoTarget.getY());
+//        double xPow = xPID.calculateSpeed(relDistancetoTarget.getX());
+//        double yPow = yPID.calculateSpeed(relDistancetoTarget.getY());
+        double xPow = relDistancetoTarget.getX();
+        double yPow = relDistancetoTarget.getY();
 
         double forwardAngle = MathUtil.angleWrap(relDistancetoTarget.getTheta());
         double backwardAngle = MathUtil.angleWrap(relDistancetoTarget.getTheta() + Math.PI);
         double autoAngle = Math.abs(forwardAngle) < Math.abs(backwardAngle) ? forwardAngle : backwardAngle;
-        double desiredAngle = path.get(pathIndex + 1) instanceof HeadingControlledWayPoint
+        double desiredAngle = MathUtil.angleWrap(path.get(pathIndex + 1) instanceof HeadingControlledWayPoint
                 || path.get(pathIndex + 1) instanceof StopWayPoint ?
-                    ((HeadingControlledWayPoint) path.get(pathIndex + 1)).getHeading() - position.getTheta() :
-                    autoAngle;
+                ((HeadingControlledWayPoint) path.get(pathIndex + 1)).getHeading() - position.getTheta() :
+                autoAngle);
 
-        double anglePow = headingPID.calculateSpeed(desiredAngle);
+//        double anglePow = headingPID.calculateSpeed(desiredAngle);
+        double anglePow = desiredAngle;
 
-        robot.getDrivetrainModule().setPowers(xPow, yPow, anglePow); // we want to move in the opposite direction as our error
+        robot.getDrivetrainModule().setPowers(-xPow, yPow, -anglePow); // we want to move in the opposite direction as our error
 
         return true;
     }

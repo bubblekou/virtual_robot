@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.kurio.odometry;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DeadWheelEncoder;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.teamcode.kurio.debug.telemetry.Telemeter;
 import org.firstinspires.ftc.teamcode.kurio.math.Pose;
@@ -39,9 +40,13 @@ public class ObamaTree implements Telemeter {
     private double lastUpdateTime = 0;
 
     // Constants
-    private static final double INCHES_PER_ENCODER_TICK = 0.0007284406721 * (100.0 / 101.9889);
-    private static final double LR_ENCODER_DIST_FROM_CENTER = 2.4367390324945863115640954444386315979381132912686705686229716745 * (3631.6415304167253 / 3600.);
-    private static final double M_ENCODER_DIST_FROM_CENTER = 2.9761730787305137386664648856740921319601002407647215925090672904 * (3622.009011720834 / 3600.);
+//    private static final double INCHES_PER_ENCODER_TICK = 0.0007284406721 * (100.0 / 101.9889);
+//    private static final double LR_ENCODER_DIST_FROM_CENTER = 2.4367390324945863115640954444386315979381132912686705686229716745 * (3631.6415304167253 / 3600.);
+//    private static final double M_ENCODER_DIST_FROM_CENTER = 2.9761730787305137386664648856740921319601002407647215925090672904 * (3622.009011720834 / 3600.);
+
+    private static final double INCHES_PER_ENCODER_TICK = 2.0 * Math.PI / 560;
+    private static final double LR_ENCODER_DIST_FROM_CENTER = 2.5;
+    private static final double M_ENCODER_DIST_FROM_CENTER = 3.0;
 
     private final Object lock = new Object();
 
@@ -49,9 +54,14 @@ public class ObamaTree implements Telemeter {
         worldX = pose.getX();
         worldY = pose.getY();
         worldHeadingRad = pose.getTheta();
-        yLeftEncoder = hardwareMap.get(DcMotor.class, "fLeft");
-        yRightEncoder = hardwareMap.get(DcMotor.class, "fRight");
-        mecanumEncoder = hardwareMap.get(DcMotor.class, "bLeft");
+
+//        yLeftEncoder = hardwareMap.get(DcMotor.class, "fLeft");
+//        yRightEncoder = hardwareMap.get(DcMotor.class, "fRight");
+//        mecanumEncoder = hardwareMap.get(DcMotor.class, "bLeft");
+
+        yLeftEncoder = hardwareMap.get(DeadWheelEncoder.class, "enc_left");
+        yRightEncoder = hardwareMap.get(DeadWheelEncoder.class, "enc_right");
+        mecanumEncoder = hardwareMap.get(DeadWheelEncoder.class, "enc_x");
 
         resetEncoders();
     }
@@ -67,8 +77,8 @@ public class ObamaTree implements Telemeter {
 
     private void calculatePosition() {
         double newLeftPosition = yLeftEncoder.getCurrentPosition();
-        double newRightPosition = yRightEncoder.getCurrentPosition();
-        double newMecanumPosition = -mecanumEncoder.getCurrentPosition();
+        double newRightPosition = -yRightEncoder.getCurrentPosition();
+        double newMecanumPosition = mecanumEncoder.getCurrentPosition();
 
         double deltaLeftPosition = newLeftPosition - lastLeftPosition;
         double deltaRightPosition = newRightPosition - lastRightPosition;

@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.kurio.modules;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import org.firstinspires.ftc.teamcode.kurio.math.MathUtil;
 
 public class DrivetrainModule implements Module {
     public static final double EPSILON = 0.03;
@@ -58,5 +59,8 @@ public class DrivetrainModule implements Module {
         fR = -y - theta - x;
         bL = -y + theta - x;
         bR = -y - theta + x;
+
+        double max = MathUtil.max(fL, fR, bL, bR);
+        fL /= max; fR /= max; bL /= max; bR /= max;
     }
 }

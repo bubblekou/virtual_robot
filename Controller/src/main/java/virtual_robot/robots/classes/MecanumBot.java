@@ -36,10 +36,10 @@ public class MecanumBot extends MecanumPhysicsBase {
     //X Encoder wheel is oriented parallel to the robot-X axis (i.e., right-left axis)
     private final double ENCODER_WHEEL_DIAMETER = 2.0;
     //Distances of right and left encoder wheels from robot centerline (i.e., the robot-X coordinates of the wheels)
-    private final double LEFT_ENCODER_X = -6.0;
-    private final double RIGHT_ENCODER_X = 6.0;
+    private final double LEFT_ENCODER_X = -2.5;
+    private final double RIGHT_ENCODER_X = 2.5;
     //Distance of X-Encoder wheel from robot-X axis (i.e., the robot-Y coordinate of the wheel)
-    private final double X_ENCODER_Y = 0.0;
+    private final double X_ENCODER_Y = 3.0;
 
     //Dimensions in pixels -- to be determined in the constructor
     private double encoderWheelRadius;

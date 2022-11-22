@@ -66,6 +66,7 @@ public class TelemetryDump implements PoseWatcher {
 
         for (Telemeter telemeter : telemeters) {
             if (!telemeter.isOn()) continue;
+            if (!telemeter.getName().equals("Odometry")) continue;
 
             allData.append("---");
             allData.append(telemeter.getName());
