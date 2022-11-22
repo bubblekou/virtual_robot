@@ -37,3 +37,9 @@ jobs:
       
     - name: Test coverage
       run: ./gradlew :TeamCode:jacocoTestReport
+      
+    - name: Archive code coverage results
+      uses: actions/upload-artifact@v3
+      with:
+        name: code-coverage-report
+        path: TeamCode/build/jacocoHtml
